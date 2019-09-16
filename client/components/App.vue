@@ -1,60 +1,85 @@
 <template>
-    <div id="app">
-        <b-container>
-            <b-row>
-                <b-col>
-                    <b-button size="lg" variant="success" class="btn-block">On</b-button>
-                </b-col>
-                <b-col>
-                    <b-button size="lg" variant="danger" class="btn-block">Off</b-button>
-                </b-col>
-            </b-row>
-            <b-row>
-                <b-col>
-                    <ColorPicker :width="300" :height="300" :disabled="false" startColor="#ffffff" @colorChange="onColorChange"></ColorPicker>
-
-                    <chrome-picker v-model="colors" @input="updateValue"></chrome-picker>
-                </b-col>
-            </b-row>
-        </b-container>
-    </div>
+  <div id="app">
+    <b-container>
+      <b-row>
+        <b-col>
+          <b-button size="lg" variant="success" class="btn-block" @click="on"
+            >On</b-button
+          >
+        </b-col>
+        <b-col>
+          <b-button size="lg" variant="danger" class="btn-block" @click="off"
+            >Off</b-button
+          >
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col>
+          <ColorPicker
+            :width="300"
+            :height="300"
+            :disabled="false"
+            start-color="#ffffff"
+            @color-change="onColorChange"
+          ></ColorPicker>
+        </b-col>
+      </b-row>
+    </b-container>
+  </div>
 </template>
 
 <script>
-const Chrome = require('vue-color').Chrome
-const axios = require('axios')
-import ColorPicker from 'vue-color-picker-wheel'
+const axios = require("axios");
+import ColorPicker from "vue-color-picker-wheel";
 
 export default {
-  name: "app",
+  name: "App",
   components: {
-    'chrome-picker': Chrome,
     ColorPicker
   },
-  data () {
+  data() {
     return {
       colors: { r: 255, g: 255, b: 255 }
-    }
+    };
   },
   methods: {
-      onColorChange(color) {
-      console.log('Color has changed to: ', color);
+    hexToRgb(hex) {
+      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result
+        ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+          }
+        : null;
     },
-    updateValue (value) {
-      //this.colors = value
-      //console.log(`R: ${value.rgba.r}, G: ${value.rgba.g}, B: ${value.rgba.b}`)
+    on() {
+      axios.post("/api/status/on").then(function(response) {
+        console.log(response);
+      });
+    },
+    off() {
+      axios.post("/api/status/off").then(function(response) {
+        console.log(response);
+      });
+    },
+    onColorChange(color) {
+      var rgb = this.hexToRgb(color);
 
-      axios.post('/api/all', {
-          r: value.rgba.r,
-          g: value.rgba.g,
-          b: value.rgba.b
-      }).then(function (response) {
-          //console.log(response)
-      })
+      console.log("Color has changed to: ", rgb);
+
+      axios
+        .post("/api/all", {
+          r: rgb.r,
+          g: rgb.g,
+          b: rgb.b
+        })
+        .then(function(response) {
+          console.log(response);
+        });
     }
   }
 };
 </script>
 
-<style>
-</style>
+<style></style>
