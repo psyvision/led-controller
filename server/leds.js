@@ -1,6 +1,7 @@
 const dotstar = require("dotstar");
 const SPI = require("pi-spi");
-const debug = require("debug")("leds");
+
+const dots = require("./scenes/dots");
 
 class LED {
   constructor() {
@@ -15,15 +16,25 @@ class LED {
     this._status = "off";
 
     this._level = 100;
+
+    this.offset = 0;
+
+    this.total = 0;
+
+    this.scenes = [new dots(this)];
   }
 
-  init(numLeds) {
-    if (numLeds > 0) {
+  init(total, offset = 0) {
+    this.offset = offset;
+
+    if (total > 0) {
       var spi = SPI.initialize("/dev/spidev0.0");
 
       this.ledStrip = new dotstar.Dotstar(spi, {
-        length: numLeds
+        length: total
       });
+
+      this.total = total;
     }
   }
 
@@ -47,6 +58,8 @@ class LED {
     this._level = value;
 
     this.update();
+
+    this.sync();
   }
 
   get colour() {
@@ -57,17 +70,33 @@ class LED {
     this._rgb = value;
 
     this.update();
+
+    this.sync();
+  }
+
+  single(led, colour) {
+    var pos = this.calc(led);
+
+    if (this.ledStrip != null) {
+      this.ledStrip.set(pos, colour.r, colour.g, colour.b);
+    }
+  }
+
+  calc(led) {
+    var pos = this.offset + led;
+
+    if (pos > this.total) {
+      return pos - this.total;
+    }
+
+    if (pos < 0) {
+      return this.total + pos;
+    }
+
+    return pos;
   }
 
   update() {
-    debug(
-      "Updating R: %o, G: %o, B: %o, A: %o",
-      this._rgb.r,
-      this._rgb.g,
-      this._rgb._b,
-      this.level
-    );
-
     if (this.ledStrip != null) {
       this.ledStrip.all(
         this._rgb.r,
@@ -75,6 +104,11 @@ class LED {
         this._rgb.b,
         this.level / 100
       );
+    }
+  }
+
+  sync() {
+    if (this.ledStrip != null) {
       this.ledStrip.sync();
     }
   }

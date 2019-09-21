@@ -9,7 +9,7 @@ var config = require("./config");
 var LED = require("./server/leds");
 
 var leds = new LED();
-leds.init(config.numLeds);
+leds.init(config.ledCount);
 
 app.use(express.static(path.join(__dirname, "/public")));
 

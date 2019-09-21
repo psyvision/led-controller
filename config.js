@@ -1,5 +1,7 @@
+require("dotenv").config();
+
 var base = {
-  numLeds: 0
+  ledCount: process.env.LED_COUNT || 0
 };
 
 module.exports = base;

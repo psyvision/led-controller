@@ -4,6 +4,7 @@
   "description": "RaspberryPi LED controller for ATA102C led strips",
   "scripts": {
     "start": "node index.js",
+    "test": "mocha",
     "build": "webpack",
     "prettier-watch": "onchange '**/*.js' -- prettier --write {{changed}}",
     "pretty": "prettier **/*.js --write"
@@ -16,8 +17,10 @@
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.1",
     "debug": "^4.1.1",
+    "dotenv": "^8.1.0",
     "dotstar": "^1.0.0",
     "express": "^4.17.1",
+    "mocha": "^6.2.0",
     "morgan": "^1.9.1",
     "pi-spi": "^1.2.1",
     "supports-color": "^7.0.0",
