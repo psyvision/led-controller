@@ -1,4 +1,4 @@
-# led-controller
+# LED Controller
 RaspberryPi LED controller for ATA102C LED strips.
 
 ## Introduction
