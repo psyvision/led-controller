@@ -1,6 +1,6 @@
 const dotstar = require("dotstar");
 const SPI = require("pi-spi");
-
+const fs = require("fs");
 const dots = require("./scenes/dots");
 
 class LED {
@@ -24,22 +24,26 @@ class LED {
     this.scenes = [new dots(this)];
   }
 
-  init(total, offset = 0) {
-    this.total = total;
-    this.offset = offset;
+  init(total, offset = 0, enableSPI = true) {
+    this.total = parseInt(total);
+    this.offset = parseInt(offset);
 
     console.log(
       `LED service initialised with ${total} LEDs and offset ${offset}`
     );
 
-    if (total > 0) {
-      var spi = SPI.initialize("/dev/spidev0.0");
+    if (enableSPI === true && total > 0) {
+      let spiBus = "/dev/spidev0.0";
 
-      this.ledStrip = new dotstar.Dotstar(spi, {
-        length: total
-      });
+      if (fs.existsSync(spiBus)) {
+        var spi = SPI.initialize(spiBus);
 
-      console.log("SPI bus initialised");
+        this.ledStrip = new dotstar.Dotstar(spi, {
+          length: total
+        });
+
+        console.log("SPI bus initialised");
+      }
     }
   }
 

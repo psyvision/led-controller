@@ -114,6 +114,16 @@ var routes = (router, leds) => {
       success: true
     });
   });
+
+  router.route("/scene/:id").get((req, res) => {
+    var scene = leds.scenes[parseInt(req.params.id)];
+
+    scene.run();
+
+    res.json({
+      success: true
+    });
+  });
 };
 
 module.exports = routes;

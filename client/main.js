@@ -1,12 +1,14 @@
 import Vue from "vue";
-import BootstrapVue from "bootstrap-vue";
 
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-vue/dist/bootstrap-vue.css";
+import Framework7 from "framework7/framework7.esm.bundle.js";
 
-import App from "./components/App.vue";
+import Framework7Vue from "framework7-vue/framework7-vue.esm.bundle.js";
 
-Vue.use(BootstrapVue);
+import "framework7/css/framework7.bundle.css";
+
+import App from "./components/app.vue";
+
+Framework7.use(Framework7Vue);
 
 new Vue({
   el: "app",

@@ -1,46 +1,41 @@
 <template>
-  <div id="app">
-    <b-container>
-      <b-row>
-        <b-col>
-          <b-button size="lg" variant="success" class="btn-block" @click="on"
-            >On</b-button
-          >
-        </b-col>
-        <b-col>
-          <b-button size="lg" variant="danger" class="btn-block" @click="off"
-            >Off</b-button
-          >
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col>
-          <ColorPicker
-            :width="300"
-            :height="300"
-            :disabled="false"
-            start-color="#ffffff"
-            @color-change="onColorChange"
-          ></ColorPicker>
-        </b-col>
-      </b-row>
-    </b-container>
-  </div>
+  <f7-app :params="f7params" theme-dark>
+    <f7-list>
+      <f7-list-item title="Switch">
+        <f7-toggle slot="after"></f7-toggle>
+      </f7-list-item>
+      <div id="demo-color-picker-inline"></div>
+    </f7-list>
+  </f7-app>
 </template>
 
 <script>
 const axios = require("axios");
-import ColorPicker from "vue-color-picker-wheel";
 
 export default {
   name: "App",
-  components: {
-    ColorPicker
-  },
   data() {
     return {
       colors: { r: 255, g: 255, b: 255 }
     };
+  },
+  mounted() {
+    const self = this;
+    const app = self.$f7;
+    self.colorPickerInline = app.colorPicker.create({
+      value: self.inlinePickerValue,
+      containerEl: "#demo-color-picker-inline",
+      modules: ["sb-spectrum", "hsb-sliders", "alpha-slider"],
+      on: {
+        change(cp, value) {
+          self.inlinePickerValue = value;
+        }
+      }
+    });
+  },
+  beforeDestroy() {
+    const self = this;
+    self.colorPickerInline.destroy();
   },
   methods: {
     hexToRgb(hex) {

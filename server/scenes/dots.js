@@ -13,20 +13,20 @@ class Scene {
 
     this.pos = 0;
 
-    setTimeout(this.doNext, 500);
+    setTimeout(this.doNext, 50, this);
 
     return true;
   }
 
-  doNext() {
-    this.pos = this.pos + 1;
+  doNext(scene) {
+    scene.leds.single(scene.pos, scene.leds.colour);
+    scene.leds.single(scene.pos * -1 - 1, scene.leds.colour);
+    scene.leds.sync();
 
-    this.leds.single(this.pos, this.leds.colour);
-    this.leds.single(this.pos * -1, this.leds.colour);
-    this.leds.sync();
+    scene.pos = scene.pos + 1;
 
-    if (this.pos < this.leds.total / 2) {
-      setTimeout(this.doNext, 500);
+    if (scene.pos < scene.leds.total / 2) {
+      setTimeout(scene.doNext, 50, scene);
     }
   }
 }
