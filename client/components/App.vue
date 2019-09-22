@@ -54,22 +54,22 @@ export default {
         : null;
     },
     on() {
-      axios.post("/api/status/on").then(function(response) {
+      axios.post("/api/on").then(function(response) {
         console.log(response);
       });
     },
     off() {
-      axios.post("/api/status/off").then(function(response) {
+      axios.post("/api/off").then(function(response) {
         console.log(response);
       });
     },
     onColorChange(color) {
       var rgb = this.hexToRgb(color);
 
-      console.log("Color has changed to: ", rgb);
+      console.log("Colour has changed to: ", rgb);
 
       axios
-        .post("/api/all", {
+        .post("/api//colour", {
           r: rgb.r,
           g: rgb.g,
           b: rgb.b

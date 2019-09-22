@@ -25,7 +25,12 @@ class LED {
   }
 
   init(total, offset = 0) {
+    this.total = total;
     this.offset = offset;
+
+    console.log(
+      `LED service initialised with ${total} LEDs and offset ${offset}`
+    );
 
     if (total > 0) {
       var spi = SPI.initialize("/dev/spidev0.0");
@@ -34,7 +39,7 @@ class LED {
         length: total
       });
 
-      this.total = total;
+      console.log("SPI bus initialised");
     }
   }
 
