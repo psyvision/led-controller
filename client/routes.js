@@ -1,15 +1,9 @@
-import HomePage from "../pages/home.vue";
-
-import NotFoundPage from "../pages/404.vue";
+import HomePage from "./components/pages/home.vue";
 
 var routes = [
   {
     path: "/",
     component: HomePage
-  },
-  {
-    path: "(.*)",
-    component: NotFoundPage
   }
 ];
 
