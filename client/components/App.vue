@@ -1,83 +1,34 @@
 <template>
-  <div id="app">
-    <b-container>
-      <b-row>
-        <b-col>
-          <b-button size="lg" variant="success" class="btn-block" @click="on"
-            >On</b-button
-          >
-        </b-col>
-        <b-col>
-          <b-button size="lg" variant="danger" class="btn-block" @click="off"
-            >Off</b-button
-          >
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col>
-          <ColorPicker
-            :width="300"
-            :height="300"
-            :disabled="false"
-            start-color="#ffffff"
-            @color-change="onColorChange"
-          ></ColorPicker>
-        </b-col>
-      </b-row>
-    </b-container>
-  </div>
+  <f7-app :params="f7params" theme-dark>
+    <f7-view main class="safe-areas" url="/"></f7-view>
+  </f7-app>
 </template>
 
 <script>
-const axios = require("axios");
-import ColorPicker from "vue-color-picker-wheel";
+import routes from "../routes.js";
 
 export default {
   name: "App",
-  components: {
-    ColorPicker
-  },
   data() {
     return {
-      colors: { r: 255, g: 255, b: 255 }
+      f7params: {
+        name: "LED Controller", // App name
+        theme: "auto", // Automatic theme detection
+
+        // App root data
+        data: function() {
+          return {};
+        },
+
+        // App routes
+        routes: routes
+
+        // Register service worker
+        //serviceWorker: {
+        //  path: "/service-worker.js"
+        //}
+      }
     };
-  },
-  methods: {
-    hexToRgb(hex) {
-      var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result
-        ? {
-            r: parseInt(result[1], 16),
-            g: parseInt(result[2], 16),
-            b: parseInt(result[3], 16)
-          }
-        : null;
-    },
-    on() {
-      axios.post("/api/on").then(function(response) {
-        console.log(response);
-      });
-    },
-    off() {
-      axios.post("/api/off").then(function(response) {
-        console.log(response);
-      });
-    },
-    onColorChange(color) {
-      var rgb = this.hexToRgb(color);
-
-      console.log("Colour has changed to: ", rgb);
-
-      axios
-        .post("/api//colour", {
-          r: rgb.r,
-          g: rgb.g,
-          b: rgb.b
-        })
-        .then(function(response) {
-          console.log(response);
-        });
-    }
   }
 };
 </script>
