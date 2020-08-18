@@ -22,31 +22,35 @@ app.listen(port);
 
 console.log("LED Controller Listening On Port: " + port);
 
-var webpack = require("webpack");
-var webpackConfig = require("./webpack.config");
-var compiler = webpack(webpackConfig);
+console.log('Node Env:', process.env.NODE_ENV)
 
-app.use(
-  require("webpack-dev-middleware")(compiler, {
-    logLevel: "warn",
-    publicPath: webpackConfig.output.publicPath
-  })
-);
+if (process.env.NODE_ENV !== 'production') {
+  var webpack = require("webpack");
+  var webpackConfig = require("./webpack.config");
+  var compiler = webpack(webpackConfig);
 
-app.use(
-  require("webpack-hot-middleware")(compiler, {
-    log: console.log,
-    path: "/__webpack_hmr",
-    heartbeat: 10 * 1000
-  })
-);
+  app.use(
+    require("webpack-dev-middleware")(compiler, {
+      logLevel: "warn",
+      publicPath: webpackConfig.output.publicPath
+    })
+  );
+
+  app.use(
+    require("webpack-hot-middleware")(compiler, {
+      log: console.log,
+      path: "/__webpack_hmr",
+      heartbeat: 10 * 1000
+    })
+  );
+}
 
 var router = express.Router();
 
 require("./server/routes")(router, leds);
 app.use("/api", router);
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:" + port);
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -59,6 +63,6 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get("/", function(req, res) {
+app.get("/", function (req, res) {
   res.sendfile("./public/index.html");
 });

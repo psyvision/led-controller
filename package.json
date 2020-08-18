@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node index.js",
     "test": "mocha",
-    "build": "webpack",
+    "build:dev": "webpack",
+    "build:prod": "webpack --config webpack.config.prod.js",
+    "serve": "cross-env NODE_ENV=production node index.js",
     "prettier-watch": "onchange '**/*.js' -- prettier --write {{changed}}",
     "pretty": "prettier **/*.js --write"
   },
@@ -26,6 +28,7 @@
     "body-parser": "^1.19.0",
     "bootstrap": "^4.5.0",
     "bootstrap-vue": "^2.14.0",
+    "cross-env": "^7.0.2",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
     "dotstar": "^1.0.0",
