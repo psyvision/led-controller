@@ -35,7 +35,7 @@
     "express": "^4.17.1",
     "framework7": "^4.5.2",
     "framework7-vue": "^4.5.2",
-    "mocha": "^6.2.3",
+    "mocha": "^10.2.0",
     "morgan": "^1.10.0",
     "pi-spi": "^1.2.1",
     "supports-color": "^7.1.0",
