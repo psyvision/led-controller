@@ -56,7 +56,7 @@
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-vue": "^5.2.3",
     "file-loader": "^4.3.0",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "^5.5.0",
     "onchange": "^6.1.1",
     "prettier": "^1.19.1",
     "vue-loader": "^15.9.2",
